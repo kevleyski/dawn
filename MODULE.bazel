@@ -4,3 +4,42 @@
 #
 # For more details, please check https://github.com/bazelbuild/bazel/issues/18958
 ###############################################################################
+
+module(
+    name = "dawn",
+    version = "1.0.0",
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.4.2")
+bazel_dep(name = "abseil-cpp", repo_name = "abseil_cpp")
+bazel_dep(name = "googletest", repo_name = "gtest")
+bazel_dep(name = "google_benchmark", repo_name = "benchmark")
+
+local_path_override(
+    module_name = "abseil-cpp",
+    path = "third_party/abseil-cpp",
+)
+
+local_path_override(
+    module_name = "googletest",
+    path = "third_party/googletest",
+)
+
+local_path_override(
+    module_name = "google_benchmark",
+    path = "third_party/google_benchmark/src",
+)
+
+local_path_override(
+    module_name = "spirv-headers",
+    path = "third_party/spirv-headers/src",
+)
+
+local_path_override(
+    module_name = "spirv-tools",
+    path = "third_party/spirv-tools/src",
+)
+
+# Add dependencies for SPIRV
+bazel_dep(name = "spirv-headers", repo_name = "spirv_headers")
+bazel_dep(name = "spirv-tools", repo_name = "spirv_tools")

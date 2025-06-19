@@ -1,8 +1,8 @@
-load("@bazel_skylib//rules:common_settings.bzl", "string_flag", "bool_flag")
 load("@bazel_skylib//lib:selects.bzl", "selects")
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag", "string_flag")
 
 def declare_bool_flag(name, default):
-    """Create a boolean flag and two config_settings with the names: <name>_true, <name>_false.
+    """Create a boolean flag and two config_settings with the names: <n>_true, <n>_false.
 
     declare_bool_flag is a Bazel Macro that defines a boolean flag with the given name two
     config_settings, one for True, one for False. Reminder that Bazel has special syntax for
@@ -14,9 +14,11 @@ def declare_bool_flag(name, default):
         name: string, the name of the flag to create and use for the config_settings
         default: boolean, if the flag should default to on or off.
     """
-
-    bool_flag(name = name, build_setting_default = default)
-
+    bool_flag(
+        name = name,
+        build_setting_default = default,
+        visibility = ["//visibility:public"],
+    )
     native.config_setting(
         name = name + "_true",
         flag_values = {
@@ -24,7 +26,6 @@ def declare_bool_flag(name, default):
         },
         visibility = ["//visibility:public"],
     )
-
     native.config_setting(
         name = name + "_false",
         flag_values = {
@@ -44,7 +45,7 @@ def declare_os_flag():
         "win",
         "linux",
         "mac",
-        "other"
+        "other",
     ]
 
     string_flag(
@@ -56,12 +57,12 @@ def declare_os_flag():
     for os in OSes:
         native.config_setting(
             name = "tint_build_is_{}_true".format(os),
-            flag_values = { ":os": os },
+            flag_values = {":os": os},
             visibility = ["//visibility:public"],
         )
         selects.config_setting_group(
             name = "tint_build_is_{}_false".format(os),
-            match_any = [ "tint_build_is_{}_true".format(other) for other in OSes if other != os],
+            match_any = ["tint_build_is_{}_true".format(other) for other in OSes if other != os],
             visibility = ["//visibility:public"],
         )
 
@@ -70,27 +71,27 @@ COPTS = [
     "-fno-exceptions",
     "--std=c++20",
 ] + select({
-    "//src/tint:tint_build_glsl_writer_true": [ "-DTINT_BUILD_GLSL_WRITER" ],
+    "//src/tint:tint_build_glsl_writer_true": ["-DTINT_BUILD_GLSL_WRITER"],
     "//conditions:default": [],
 }) + select({
-    "//src/tint:tint_build_hlsl_writer_true": [ "-DTINT_BUILD_HLSL_WRITER" ],
+    "//src/tint:tint_build_hlsl_writer_true": ["-DTINT_BUILD_HLSL_WRITER"],
     "//conditions:default": [],
 }) + select({
-    "//src/tint:tint_build_ir_true":          [ "-DTINT_BUILD_IR" ],
+    "//src/tint:tint_build_ir_true": ["-DTINT_BUILD_IR"],
     "//conditions:default": [],
 }) + select({
-    "//src/tint:tint_build_msl_writer_true":  [ "-DTINT_BUILD_MSL_WRITER" ],
+    "//src/tint:tint_build_msl_writer_true": ["-DTINT_BUILD_MSL_WRITER"],
     "//conditions:default": [],
 }) + select({
-    "//src/tint:tint_build_spv_reader_true":  [ "-DTINT_BUILD_SPV_READER" ],
+    "//src/tint:tint_build_spv_reader_true": ["-DTINT_BUILD_SPV_READER"],
     "//conditions:default": [],
 }) + select({
-    "//src/tint:tint_build_spv_writer_true":  [ "-DTINT_BUILD_SPV_WRITER" ],
+    "//src/tint:tint_build_spv_writer_true": ["-DTINT_BUILD_SPV_WRITER"],
     "//conditions:default": [],
 }) + select({
-    "//src/tint:tint_build_wgsl_reader_true": [ "-DTINT_BUILD_WGSL_READER" ],
+    "//src/tint:tint_build_wgsl_reader_true": ["-DTINT_BUILD_WGSL_READER"],
     "//conditions:default": [],
 }) + select({
-    "//src/tint:tint_build_wgsl_writer_true": [ "-DTINT_BUILD_WGSL_WRITER" ],
+    "//src/tint:tint_build_wgsl_writer_true": ["-DTINT_BUILD_WGSL_WRITER"],
     "//conditions:default": [],
 })
