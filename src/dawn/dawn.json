@@ -162,7 +162,7 @@
                 "name": "request device",
                 "returns": "future",
                 "args": [
-                    {"name": "options", "type": "device descriptor", "annotation": "const*", "optional": true, "no_default": true},
+                    {"name": "descriptor", "type": "device descriptor", "annotation": "const*", "optional": true, "no_default": true},
                     {"name": "callback info", "type": "request device callback info"}
                 ]
             },
@@ -440,13 +440,6 @@
             {"name": "present modes", "type": "present mode", "annotation": "const*", "length": "present mode count"},
             {"name": "alpha mode count", "type": "size_t"},
             {"name": "alpha modes", "type": "composite alpha mode", "annotation": "const*", "length": "alpha mode count"}
-        ],
-        "methods": [
-            {
-                "name": "free members",
-                "returns": "void",
-                "args": []
-            }
         ]
     },
     "surface configuration": {
@@ -3373,8 +3366,8 @@
             {"name": "stencil read mask", "type": "uint32_t", "default": "0xFFFFFFFF"},
             {"name": "stencil write mask", "type": "uint32_t", "default": "0xFFFFFFFF"},
             {"name": "depth bias", "type": "int32_t", "default": "0"},
-            {"name": "depth bias slope scale", "type": "float", "default": "0.0f"},
-            {"name": "depth bias clamp", "type": "float", "default": "0.0f"}
+            {"name": "depth bias slope scale", "type": "float", "default": "0.f"},
+            {"name": "depth bias clamp", "type": "float", "default": "0.f"}
         ]
     },
 
@@ -3464,8 +3457,8 @@
             {"name": "mag filter", "type": "filter mode", "default": "nearest"},
             {"name": "min filter", "type": "filter mode", "default": "nearest"},
             {"name": "mipmap filter", "type": "mipmap filter mode", "default": "nearest"},
-            {"name": "lod min clamp", "type": "float", "default": "0.0f"},
-            {"name": "lod max clamp", "type": "float", "default": "32.0f"},
+            {"name": "lod min clamp", "type": "float", "default": "0.f"},
+            {"name": "lod max clamp", "type": "float", "default": "32.f"},
             {"name": "compare", "type": "compare function"},
             {"name": "max anisotropy", "type": "uint16_t", "default": "1"}
         ]
@@ -4245,6 +4238,7 @@
             {"value": 4, "name": "pointer composite access", "jsrepr": "'pointer_composite_access'"},
             {"value": 5, "name": "sized binding array", "jsrepr": "'sized_binding_array'"},
             {"value": 6, "name": "texel buffers", "jsrepr": "'texel_buffers'"},
+            {"value": 7, "name": "texture sample level 1d",  "jsrepr": "'texture_sample_level_1d'", "tags": ["dawn"]},
 
             {"value": 0, "name": "chromium testing unimplemented", "jsrepr": "'chromium_testing_unimplemented'", "tags": ["dawn"]},
             {"value": 1, "name": "chromium testing unsafe experimental", "jsrepr": "'chromium_testing_unsafe_experimental'", "tags": ["dawn"]},
